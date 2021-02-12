@@ -23,9 +23,6 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Pablo
  */
-
-
-
 public class AlumnosControler extends HttpServlet {
 
     /**
@@ -37,40 +34,38 @@ public class AlumnosControler extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
-private ArrayList<String> grupos;
-private String rutaFicheros;
-private String rutaFicheroGrupoA;
-private String rutaFicheroGrupoB;
-private ArrayList <Alumno> listadoGrupoA = null;
-private ArrayList <Alumno> listadoGrupoB = null;
+    private ArrayList<String> grupos;
+    private String rutaFicheros;
+    private String rutaFicheroGrupoA;
+    private String rutaFicheroGrupoB;
+    private ArrayList<Alumno> listadoGrupoA = null;
+    private ArrayList<Alumno> listadoGrupoB = null;
 
-    
     public void init(ServletConfig config) throws ServletException {
-        
+
         listadoGrupoA = new ArrayList<Alumno>();
         listadoGrupoB = new ArrayList<Alumno>();
-        
+
         grupos = new ArrayList<String>();
         grupos.add("Grupo A");
         grupos.add("Grupo B");
 
         rutaFicheros = config.getServletContext().getRealPath("").concat(File.separator).concat("ficheros");
-        
-         rutaFicheroGrupoA = config.getServletContext().getRealPath("").concat(File.separator).concat("ficheros")
+
+        rutaFicheroGrupoA = config.getServletContext().getRealPath("").concat(File.separator).concat("ficheros")
                 .concat(File.separator).concat("2daw_a.txt");
-         rutaFicheroGrupoB = config.getServletContext().getRealPath("").concat(File.separator).concat("ficheros")
+        rutaFicheroGrupoB = config.getServletContext().getRealPath("").concat(File.separator).concat("ficheros")
                 .concat(File.separator).concat("2daw_b.txt");
-         
-    try {
-        listadoGrupoA = Utilidades.getAlumnos(rutaFicheroGrupoA);
-        listadoGrupoB = Utilidades.getAlumnos(rutaFicheroGrupoB);
-    } catch (IOException ex) {
-        Logger.getLogger(AlumnosControler.class.getName()).log(Level.SEVERE, null, ex);
+
+        try {
+            listadoGrupoA = Utilidades.getAlumnos(rutaFicheroGrupoA);
+            listadoGrupoB = Utilidades.getAlumnos(rutaFicheroGrupoB);
+        } catch (IOException ex) {
+            Logger.getLogger(AlumnosControler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
-        
-    }
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -80,7 +75,7 @@ private ArrayList <Alumno> listadoGrupoB = null;
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AlumnosControler</title>");            
+            out.println("<title>Servlet AlumnosControler</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet AlumnosControler at " + request.getContextPath() + "</h1>");
@@ -103,18 +98,18 @@ private ArrayList <Alumno> listadoGrupoB = null;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         
-        if ( request.getParameter("grupo") == null || request.getParameter("grupo").equals("Grupo A")  ){
+
+        if (request.getParameter("grupo") == null || request.getParameter("grupo").equals("Grupo A")) {
             request.setAttribute("alumnos", listadoGrupoA);
             request.setAttribute("grupoSel", "2DAW A");
         } else {
             request.setAttribute("alumnos", listadoGrupoB);
             request.setAttribute("grupoSel", "2DAW B");
         }
-        
+
         request.setAttribute("grupos", grupos);
         request.getRequestDispatcher("mostrarGrupo.jsp").forward(request, response);
-    
+
     }
 
     /**
@@ -128,6 +123,22 @@ private ArrayList <Alumno> listadoGrupoB = null;
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        ArrayList<Alumno> alumnosA = Utilidades.getAlumnos(rutaFicheroGrupoA);
+        ArrayList<Alumno> alumnosB = Utilidades.getAlumnos(rutaFicheroGrupoB);
+        ArrayList<Alumno> alumnosSalida = new ArrayList<Alumno>();
+
+        for (int i = 1; i < 15; i++) {
+
+            if (request.getParameter(String.valueOf(i)) != null) {
+                alumnosSalida.add(alumnosA.get(i - 1));
+            }
+
+        }
+
+        request.setAttribute("alumnos", alumnosSalida);
+        request.getRequestDispatcher("enviarMensaje.jsp").forward(request, response);
+
     }
 
     /**

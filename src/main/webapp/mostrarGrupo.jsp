@@ -60,7 +60,7 @@
                         <td><%= alum.getNombre()%></td>
                         <td><%= alum.getApellidos()%></td>
                         <td><%= alum.getEmail()%></td>
-                        <td> <input type="checkbox" > </td>
+                        <td> <input name="<%= alum.getId()%>" value="1" type="checkbox" > </td>
                     </tr>
 
 
