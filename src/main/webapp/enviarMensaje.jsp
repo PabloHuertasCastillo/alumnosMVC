@@ -18,7 +18,10 @@
         
         <%
             ArrayList<Alumno> alumnos = (ArrayList<Alumno>) request.getAttribute("alumnos");
+            String grupo = (String) request.getAttribute("grupo");
         %>
+        
+        <h2><%= grupo %></h2>
 
         <table>
             <tbody>

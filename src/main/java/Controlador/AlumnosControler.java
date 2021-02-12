@@ -124,18 +124,29 @@ public class AlumnosControler extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        String grupo = (String) request.getParameter("grupo");
+
         ArrayList<Alumno> alumnosA = Utilidades.getAlumnos(rutaFicheroGrupoA);
         ArrayList<Alumno> alumnosB = Utilidades.getAlumnos(rutaFicheroGrupoB);
         ArrayList<Alumno> alumnosSalida = new ArrayList<Alumno>();
 
         for (int i = 1; i < 15; i++) {
 
-            if (request.getParameter(String.valueOf(i)) != null) {
-                alumnosSalida.add(alumnosA.get(i - 1));
+            if (grupo.equalsIgnoreCase("2DAW A")) {
+                if (request.getParameter(String.valueOf(i)) != null) {
+                    alumnosSalida.add(alumnosA.get(i - 1));
+                }
+            }
+            
+            if (grupo.equalsIgnoreCase("2DAW B")) {
+                if (request.getParameter(String.valueOf(i)) != null) {
+                    alumnosSalida.add(alumnosB.get(i - 1));
+                }
             }
 
         }
 
+        request.setAttribute("grupo", grupo);
         request.setAttribute("alumnos", alumnosSalida);
         request.getRequestDispatcher("enviarMensaje.jsp").forward(request, response);
 

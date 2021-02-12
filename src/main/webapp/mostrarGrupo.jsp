@@ -46,14 +46,14 @@
 
         <form action="AlumnosControler" method="post"  >
             Alumnos:
-
+        <input type="hidden" value="<%= grupoActivo%>" name="grupo" >
             <table>
                 <tbody>
                     <%
                         for (Alumno alum : alumnos) {
                     %>
 
-
+               
 
                     <tr>
                         <td scope="row"> <%= alum.getId()%></td>
